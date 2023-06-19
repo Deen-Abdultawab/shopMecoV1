@@ -58,7 +58,6 @@ export default {
 
 
 <style scoped>
-@import url('http://fonts.cdnfonts.com/css/sofia-pro');
 
     h4, li, p {
         font-size: inherit;
