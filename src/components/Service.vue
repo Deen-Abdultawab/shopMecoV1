@@ -106,9 +106,6 @@ export default {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Fruktur&family=Inter:wght@100;200;300;400;600;700;800&family=Licorice&display=swap');
-@import url('http://fonts.cdnfonts.com/css/sofia-pro');
-
 
 
 h2{
