@@ -248,7 +248,7 @@ export default {
       }
       
       .all {
-        padding: 2px;
+        padding: 1rem;
         
       }
 

@@ -146,7 +146,7 @@ h1 {
 
 .img2 {
   margin-left: 1rem;
-  margin-top: 15rem;
+  margin-top: 8.1rem;
 }
 
 .overlay1 {
@@ -158,8 +158,8 @@ h1 {
 .overlay2 {
   z-index: 99;
   right: 0;
-  top: 13rem;
-  left: -1.3rem;
+  top: 10rem;
+  left: -1rem;
 }
 
 .body p {
@@ -245,7 +245,7 @@ h1 {
 
   .main-container {
     padding: 0 30px;
-    margin-bottom: 150px;
+    margin-bottom: 80px;
   }
 }
 </style>

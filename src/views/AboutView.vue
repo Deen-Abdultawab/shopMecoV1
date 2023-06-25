@@ -146,7 +146,7 @@ li {
 
 .img2 {
   margin-left: 1rem;
-  margin-top: 15rem;
+  margin-top: 8.1rem;
 }
 
 .overlay1 {
@@ -158,8 +158,8 @@ li {
 .overlay2 {
   z-index: 99;
   right: 0;
-  top: 13rem;
-  left: -1.3rem;
+  top: 10rem;
+  left: -1rem;
 }
 
 h1 {
@@ -228,7 +228,7 @@ h1 {
 
   .main-container {
     padding: 0 30px;
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
   }
 
   .about-article {

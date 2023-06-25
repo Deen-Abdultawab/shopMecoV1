@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="right-col">
+    <div class="right-col" id="form">
       <div class="top-right">
          <h4>
           Already have an account?<router-link :to="{ name: 'login'}">Login</router-link>
@@ -202,7 +202,7 @@ export default {
         /* justify-content: space-between; */
     }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
 
       .mobile-nav {
       display: block;

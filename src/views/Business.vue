@@ -74,7 +74,7 @@
                   <div class="line"></div>
               </div>
 
-              <div class="btn btn2">
+              <div class="btn btn2" @click="handleClickSignIn">
                 <img src="../assets/images/Group3707.png" alt="">
               </div>
             </form>
@@ -111,19 +111,20 @@
 
           <div class="one">
             <form @submit.prevent="handleSecond">
-                <div class="custom-form">
+                 <div class="custom-form">
                   <label for="number"> Your phone number </label>
                   <br />
-                  <div class="custom-input">
-                    <div class="country-details">
-                      <span class="flag"></span>
-                      <select class="call-codes">
-                        <option>+234</option>
-                        <option>+233</option>
-                        <option>+200</option>
-                      </select>
-                    </div>
-                    <input type="number" placeholder="07032135453">
+                  <div class="custom-input phone">
+                    <MazPhoneNumberInput
+                      v-model="phoneNumber"
+                      show-code-on-list
+                      color="info"
+                      :preferred-countries="['NG', 'BE', 'DE', 'US', 'GB']"
+                      :ignored-countries="['AC']"
+                      @update="results = $event"
+                      :success="results?.isValid"
+                      default-country-code="NG"
+                    />
                   </div>
                 </div>
 
@@ -245,14 +246,37 @@
 
 <script>
 import { ref } from "vue";
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import 'maz-ui/css/main.css'
+import 'maz-ui/css/aos.css'
+import { googleTokenLogin } from "vue3-google-login"
 
 export default {
-  components: {},
+  components: { MazPhoneNumberInput },
   setup(){
-    const showOne = ref(false)
+    const showOne = ref(true)
     const showTwo = ref(false)
-    const showThree = ref(true)
+    const showThree = ref(false)
     const name = ref('')
+    const phoneNumber = ref()
+    const results = ref()
+    const accessToken = ref(null)
+
+    async function handleClickSignIn(){
+       googleTokenLogin().then(async (response) => {
+        console.log("Handle the response", response)
+        // console.log(response.access_token)
+        accessToken.value = { "accessToken": response.access_token }
+        console.log(accessToken.value)
+        await fetch('https://shopmeco-api.onrender.com/api/auth/signin/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify(accessToken.value)
+        })
+        .then((res)=> console.log(res))
+        .catch((err)=> console.log(err.message))
+      })
+    }
 
     function handleFirst(){
       showOne.value = false
@@ -281,7 +305,7 @@ export default {
     }
 
 
-    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, name}
+    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, name, phoneNumber, results, handleClickSignIn }
   }
 };
 </script>
@@ -322,11 +346,6 @@ export default {
     width: 100%;
   }
 
-  .mobile-nav {
-    display: none;
-    width: 100%;
-  }
-
   .container {
   display: grid;
   grid-template-columns: 1.2fr 2.4fr;
@@ -352,12 +371,6 @@ export default {
 
   .left-col div, .right-col div {
     width: 100%;
-  }
-
-  .quote img, .bottom img {
-    width: auto;
-    margin: 0 auto;
-    /* border: 1px solid red; */
   }
 
   .right-col{
@@ -410,7 +423,6 @@ export default {
     max-width: 550px;
     padding-left: 5rem;
   }
-
   .log p{
     font-family: 'Sofia Pro';
     font-style: normal;
@@ -437,9 +449,6 @@ export default {
     color: red;
     display: none;
   }
-
-  
-
   :is(.form-input input, .form-input select, .form-input textarea):focus {
     outline: #5007e0;
   }
@@ -460,7 +469,7 @@ export default {
 
   }
 
-   .formy .forget-password {
+  .formy .forget-password {
     font-size: 12px;
   }
 
@@ -508,14 +517,12 @@ export default {
     padding: 1rem;
   }
 
-
   .line{
       max-width: 192px;
       height: 0px;
       border: 1px solid #7C7C7c;
       flex: 1;
   }
-
   .text {
     flex-basis: 10%;
     text-align: center;
@@ -601,14 +608,7 @@ export default {
    
   }
 
-   @media only screen and (max-width: 1200px) {
-    .center-form {
-      padding-left: 0rem;
-    }
-     
-  }
-
-  @media only screen and (max-width: 900px) {
+  @media only screen and (max-width: 1000px) {
 
     .container {
       grid-template-columns: 1fr;
@@ -619,10 +619,6 @@ export default {
       padding-bottom: 10rem;
     }
 
-    .quote img {
-      margin: auto;
-    }
-
     .right-col {
       place-items: center;
     }
@@ -630,7 +626,6 @@ export default {
     .center-form {
       padding: 0;
     }
-    
   }
 
   @media only screen and (max-width: 600px) {

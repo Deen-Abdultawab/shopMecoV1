@@ -83,7 +83,6 @@ form button{
     background-size: cover;
     background-repeat: no-repeat;
     height: 741px;
-    margin-bottom: 5rem;
   }
 
   .mobile-nav {

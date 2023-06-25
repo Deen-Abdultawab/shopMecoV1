@@ -2,7 +2,7 @@
     <div>
         <div class="health">
         <h2>Keep your car in good hands and in good health at all times.</h2>
-        <button>Sign me up</button>
+        <button class="btn">Sign me up</button>
         </div>
     </div>
 </template>
@@ -38,21 +38,34 @@ export default {
         width: 100%;
         color: #FFFFFF;
         align-items: center;
+        width: 888px;
     }
 
     button{
-        margin-top: 30px;
-        color: #fff;
-        padding: 18px 40px 17px;
-        width: 208px;
-        height: 60px;
-        background: #FFB74C;
+         background: #ffb74c;
         border-radius: 30px 0px 30px 30px;
+        width: 212px;
+        height: 60px;
+        margin-top: 30px;
+        align-items: center;
+        color: #fff;
+        font-family: "Sofia Pro";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 21px;
+        line-height: 21px;
         transition: all 0.3s linear;
     }
 
     button:hover {
         background: #865203;
+    }
+
+    @media only screen and (max-width: 1000px){
+        h2 {
+            width: 100%;
+            font-size: 2.5rem;
+        }
     }
 
     @media only screen and (max-width: 600px) {

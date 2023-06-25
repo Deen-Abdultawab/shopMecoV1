@@ -58,6 +58,10 @@ export default {};
   color: #ffb74c;
 }
 
+.btn, .btn2 {
+  cursor: pointer;
+}
+
 
 
 .btn2 {

@@ -75,7 +75,7 @@ export default {
   display: none;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1200px) {
   .img-container {
     display: flex;
     width: 90vw;
@@ -98,6 +98,7 @@ export default {
     background: #FFB74C;
     border-radius: 0.5rem;
     cursor: pointer;
+    box-shadow: 3px 3px 3px 2px var(--primary-gray);
   }
 
   .brand-image.active {

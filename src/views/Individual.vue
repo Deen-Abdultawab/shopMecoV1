@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="right-col-container">
-        <div class="right-col first" v-if="showOne">
+        <div class="right-col first" v-if="showOne" id="form">
           <div class="top-right">
             <div class="btn-back">
               <router-link :to="{ name: 'started'}" style="display:flex; align-items: center;">
@@ -43,6 +43,7 @@
                     placeholder="Tolulope Ololade"
                     id="name"
                     required
+                    v-model="name"
                   />
                 </div>
 
@@ -54,6 +55,7 @@
                     placeholder="Enter email address"
                     id="mail"
                     required
+                    v-model="mail"
                   />
                 </div>
 
@@ -66,6 +68,7 @@
                       placeholder="Enter password"
                       id="password"
                       required
+                      v-model="password"
                     />
                     <button class="placeholder-span">Show</button>
                   </div>
@@ -87,7 +90,7 @@
                   <div class="line"></div>
                 </div>
 
-                <div class="btn btn2">
+                <div class="btn btn2" @click="handleClickSignIn">
                   <img src="../assets/images/Group3707.png" alt="" />
                 </div>
               </form>
@@ -97,7 +100,7 @@
 
         <!-- Residency info  -->
 
-        <div class="right-col second" v-if="showTwo">
+        <div class="right-col second" v-if="showTwo" id="form">
 
           <div class="top-right">
             <div class="btn-back">
@@ -116,7 +119,7 @@
             </div>
           </div>
 
-          <div class="center-form">
+          <div class="center-form" id="form">
             <div class="log">
               <h1>Complete Your Profile</h1>
               <p>
@@ -130,16 +133,17 @@
                 <div class="custom-form">
                   <label for="number"> Your phone number </label>
                   <br />
-                  <div class="custom-input">
-                    <div class="country-details">
-                      <span class="flag"></span>
-                      <select class="call-codes">
-                        <option>+234</option>
-                        <option>+233</option>
-                        <option>+200</option>
-                      </select>
-                    </div>
-                    <input type="number" placeholder="07032135453">
+                  <div class="custom-input phone">
+                    <MazPhoneNumberInput
+                      v-model="phoneNumber"
+                      show-code-on-list
+                      color="info"
+                      :preferred-countries="['NG', 'BE', 'DE', 'US', 'GB']"
+                      :ignored-countries="['AC']"
+                      @update="results = $event"
+                      :success="results?.isValid"
+                      default-country-code="NG"
+                    />
                   </div>
                 </div>
 
@@ -147,16 +151,14 @@
                   <label for="residence"> State of residence </label>
                   <br />
                   <div class="custom-input">
-                    <select name="residence" id="residence">
+                    <select name="residence" id="residence" v-model="state">
                       <option value="">- - Select - -</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
+                      <option 
+                        v-for="state in localStates" 
+                        :key="state.id" 
+                        :value="state.name">
+                        {{ state.name }}
+                      </option>
                     </select>
                   </div>
                   
@@ -188,7 +190,7 @@
 
         <!-- service info  -->
 
-        <div class="right-col third" v-if="showThree">
+        <div class="right-col third" v-if="showThree" id="form">
           <div class="top-right">
             <div class="btn-back">
               <a href="#" style="display: flex; align-items: center" @click="handleBackTwo">
@@ -224,6 +226,8 @@
                     type="text"
                     placeholder="Mercedez Benz"
                     id="car"
+                    v-model="carModel"
+                    @change="handleModel"
                     required
                   />
                 </div>
@@ -232,40 +236,19 @@
                   <label for="model"> Car Model </label>
                   <br />
                   <div class="custom-input">
-                    <select name="model" id="model">
+                    <select name="model" id="model" v-model="model">
                       <option value="">-- Select --</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
+                      <option 
+                        v-for="model in modellist" 
+                        :key="model" 
+                        :value="model">
+                        {{ model }}
+                      </option>
+                      
                     </select>
                   </div>
+                  <div class="error" :class="{ showError: error && carModel.length}">{{ error }}</div>
                 </div>
-
-                <!-- <div class="custom-form">
-                  <label for="service"> Required Service(s) </label>
-                  <br />
-                  <div class="custom-input">
-                    <select name="service" id="service">
-                      <option value="">-- Select --</option>
-                      <option value="">AC Service and repair</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                      <option value="">1998</option>
-                    </select>
-                  </div>
-                  <div class="service">
-                    <span>Bodywork, airconditioning, automechanic</span>
-                  </div>
-                </div> -->
 
                 <div class="bottom-right">
                   <h4>
@@ -288,14 +271,95 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import 'maz-ui/css/main.css'
+import 'maz-ui/css/aos.css'
+import { googleTokenLogin } from "vue3-google-login"
+
+
 
 export default {
-  components: {},
+  components: {  MazPhoneNumberInput },
+   
   setup(){
     const showOne = ref(true)
     const showTwo = ref(false)
     const showThree = ref(false)
+    const localStates = ref([])
+    const accessToken = ref(null)
+    const carModel = ref('')
+    const modellist = ref([])
+    const error = ref(null)
+    const phoneNumber = ref()
+    const results = ref()
+    const name = ref(null)
+    const mail = ref(null)
+    const password = ref(null)
+    const model = ref(null)
+    
+
+    async function handleClickSignIn(){
+       googleTokenLogin().then(async (response) => {
+        console.log("Handle the response", response)
+        // console.log(response.access_token)
+        accessToken.value = { "accessToken": response.access_token }
+        console.log(accessToken.value)
+        await fetch('https://shopmeco-api.onrender.com/api/auth/signin/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify(accessToken.value)
+        })
+        .then((res)=> console.log(res))
+        .catch((err)=> console.log(err.message))
+      })
+    }
+    
+    
+    onMounted(async ()=>{
+         try {
+            const response = await fetch('https://locus.fkkas.com/api/states')
+            if(!response.ok){
+                throw Error('no data available')
+            }
+            const result = await response.json()
+            const { data } = result
+            const list = data.map((item)=>{
+              const { name, id } = item
+              return { name, id}
+            })
+
+            localStates.value = list
+        } catch (err) {
+            console.log(err.message)
+            
+        }
+
+       
+      
+
+    })
+
+    async function handleModel(){
+      error.value = null
+       try {
+          const res = await fetch(`http://localhost:3000/cars/?name=${carModel.value.toLowerCase()}`)
+            if(!res.ok){
+              throw Error('no data available')
+            }
+            const data = await res.json()
+            const { models } = data[0]
+            console.log(models)
+            modellist.value = models
+        } catch (err) {
+          console.log(err.message)
+          error.value = 'coming soon'
+
+        }
+    }
+
+    // console.log(localStates)
+    
 
     function handleFirst(){
       showOne.value = false
@@ -320,7 +384,8 @@ export default {
     }
 
 
-    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo}
+
+    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, localStates, handleClickSignIn, carModel, modellist, handleModel, error, phoneNumber, results, name, password, mail, model }
   }
 };
 </script>
@@ -395,11 +460,6 @@ h4 {
 
 .left-col div {
   width: 100%;
-}
-
-.quote img{
-  width: auto;
-  margin: 0 auto;
 }
 
 .top-right {
@@ -569,33 +629,17 @@ span a {
   width: 100%;
 }
 
-@media only screen and (max-width: 1200px) {
-  .center-form {
-    padding-left: 0rem;
-  }
-}
-
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
   .container {
     grid-template-columns: 1fr;
   }
-
   .left-col {
     gap: 8.5rem;
     padding-bottom: 10rem;
   }
-
-  .quote img {
-    margin: auto;
-  }
-
   .right-col {
     place-items: center;
     padding: 5rem 1.25rem 10rem;
-  }
-
-  .center-form {
-    padding: 0;
   }
 }
 

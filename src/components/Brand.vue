@@ -116,6 +116,7 @@ export default {
   width: 1258px;
   max-width: 95vw;
   margin: 0 auto 10rem;
+
 }
 
 .brand-container {
@@ -134,9 +135,15 @@ export default {
   place-items: center;
   position: relative;
   /* border: 1px solid red; */
-  height: auto;
-  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  /* padding: 1rem; */
+
 }
+
+/* .brand-img img {
+  width: 100%;
+} */
 
 .brand h1 {
   font-family: "Sofia Pro";
@@ -220,17 +227,20 @@ export default {
   color: #7c7c7c;
 }
 
+@media only screen and (max-width: 1200px){
+
+  .brand-container {
+    display: none;
+    border: 1px solid red;
+  }
+}
+
 @media only screen and (max-width: 900px) {
   .brand {
     margin-bottom: 4rem;
   }
-
   .brand h1 {
     font-size: 1.2rem;
-  }
-
-  .brand-container {
-    display: none;
   }
 
   
