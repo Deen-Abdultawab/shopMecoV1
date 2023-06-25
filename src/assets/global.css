@@ -130,7 +130,6 @@ label {
   .flag {
     width: 37px;
     height: 100%;
-    border: 1px solid blue;
   }
 
   .custom-form input {
@@ -220,8 +219,6 @@ label {
 
     #form.right-col {
        padding: 5rem 1.5rem 10rem;
-      border: 1px solid red;
-
     }
 
     
