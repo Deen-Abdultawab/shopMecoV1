@@ -227,7 +227,7 @@
                     placeholder="Mercedez Benz"
                     id="car"
                     v-model="carModel"
-                    @change="handleModel"
+                    @input="handleModel"
                     required
                   />
                 </div>
@@ -235,7 +235,7 @@
                 <div class=" custom-form">
                   <label for="model"> Car Model </label>
                   <br />
-                  <div class="custom-input">
+                  <div class="custom-input" @click="handleError">
                     <select name="model" id="model" v-model="model">
                       <option value="">-- Select --</option>
                       <option 
@@ -247,7 +247,7 @@
                       
                     </select>
                   </div>
-                  <div class="error" :class="{ showError: error && carModel.length}">{{ error }}</div>
+                  <div class="error" :class="{ showError: error }">{{ error }}</div>
                 </div>
 
                 <div class="bottom-right">
@@ -283,9 +283,9 @@ export default {
   components: {  MazPhoneNumberInput },
    
   setup(){
-    const showOne = ref(true)
+    const showOne = ref(false)
     const showTwo = ref(false)
-    const showThree = ref(false)
+    const showThree = ref(true)
     const localStates = ref([])
     const accessToken = ref(null)
     const carModel = ref('')
@@ -342,24 +342,36 @@ export default {
 
     async function handleModel(){
       error.value = null
-       try {
-          const res = await fetch(`http://localhost:3000/cars/?name=${carModel.value.toLowerCase()}`)
-            if(!res.ok){
-              throw Error('no data available')
-            }
-            const data = await res.json()
-            const { models } = data[0]
-            console.log(models)
-            modellist.value = models
-        } catch (err) {
-          console.log(err.message)
-          error.value = 'coming soon'
+      modellist.value = null
 
-        }
+      fetch(`/vehicle/cars.json`)
+      .then(res => res.json())
+      .then(data =>{
+        const { cars } = data
+        cars.forEach((car)=>{
+          if(car.name === carModel.value.toLowerCase()){
+            modellist.value = car.models
+          }
+        })
+        
+      })
+      .catch(err => {
+        console.log(err.message)
+        modellist.value = null
+      })
+      
     }
 
-    // console.log(localStates)
-    
+    function handleError(){
+      error.value =null
+      if(!modellist.value && carModel.value.length){
+        error.value = 'coming soon'
+      }
+
+      if(!carModel.value.length){
+        error.value = 'enter make of vehicle'
+      }
+    }
 
     function handleFirst(){
       showOne.value = false
@@ -385,9 +397,9 @@ export default {
 
 
 
-    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, localStates, handleClickSignIn, carModel, modellist, handleModel, error, phoneNumber, results, name, password, mail, model }
+    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, localStates, handleClickSignIn, carModel, modellist, handleModel, error, phoneNumber, results, name, password, mail, model, handleError }
   }
-};
+}
 </script>
 
 <style scoped>
