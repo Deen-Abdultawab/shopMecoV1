@@ -283,9 +283,9 @@ export default {
   components: {  MazPhoneNumberInput },
    
   setup(){
-    const showOne = ref(false)
+    const showOne = ref(true)
     const showTwo = ref(false)
-    const showThree = ref(true)
+    const showThree = ref(false)
     const localStates = ref([])
     const accessToken = ref(null)
     const carModel = ref('')

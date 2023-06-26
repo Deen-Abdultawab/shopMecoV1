@@ -207,6 +207,10 @@ label {
       width: auto;
     }
 
+    select options {
+      background: transparent;
+    }
+
     @media only screen and (max-width: 1200px) {
     #form .center-form {
       padding: 0;
