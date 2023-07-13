@@ -37,6 +37,18 @@ const routes = [
     name: 'business',
     component: () => import(/* webpackChunkName: "about" */ '../views/Business.vue')
   },
+  {
+    path: '/idashboard/:userId',
+    name: 'dashboard',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/individual/Dashboard.vue'),
+    props: true
+  },
+  {
+    path: '/idashboard/detail/:serviceId',
+    name: 'serviceDetail',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/ServiceDetails.vue'),
+    props: true
+  }
 ]
 
 const router = createRouter({
