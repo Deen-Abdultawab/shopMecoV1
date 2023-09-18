@@ -11,7 +11,7 @@
         </div>
       </div>
       
-      <div class="right-col first" v-if="showOne">
+      <div class="right-col first" v-if="showOne"  id="form">
         <div class="top-right">
           <div class="btn-back">
             <router-link :to="{ name: 'started'}" style="display:flex; align-items: center;">
@@ -87,7 +87,7 @@
 
         <!-- Workshop info  -->
 
-      <div class="right-col second" v-if="showTwo">
+      <div class="right-col second" v-if="showTwo"  id="form">
         <!-- <navbar class="mobile-nav"/> -->
 
         <div class="top-right">
@@ -102,7 +102,7 @@
           </div>
         </div>
 
-        <div class="center-form">
+        <div class="center-form"  id="form">
 
           <div class="log">
              <h1>Complete Your Profile</h1>
@@ -162,10 +162,10 @@
 
       <!-- service info  -->
 
-       <div class="right-col third" v-if="showThree">
+       <div class="right-col third" v-if="showThree"  id="form">
         <div class="top-right">
           <div class="btn-back">
-            <a href="" style="display:flex; align-items: center;" @click="handleBackTwo">
+            <a href="#" style="display:flex; align-items: center;" @click="handleBackTwo">
             <img src="../assets/images/icon.png" alt="" style="width:20px; height:20px; margin-right: 10px;"> back
           </a>
           </div>
@@ -613,19 +613,16 @@ export default {
     .container {
       grid-template-columns: 1fr;
     }
-
     .left-col {
       gap: 8.5rem;
       padding-bottom: 10rem;
     }
-
     .right-col {
       place-items: center;
+      padding: 5rem 1.25rem 10rem;
     }
 
-    .center-form {
-      padding: 0;
-    }
+    
   }
 
   @media only screen and (max-width: 600px) {

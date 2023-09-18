@@ -218,7 +218,7 @@
             </div>
 
             <div class="one">
-              <form >
+              <form @submit.prevent="handleSubmit">
                 <div class="form-input">
                   <label for="car"> car name </label>
                   <br />
@@ -276,6 +276,7 @@ import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
 import 'maz-ui/css/main.css'
 import 'maz-ui/css/aos.css'
 import { googleTokenLogin } from "vue3-google-login"
+import { useRouter } from "vue-router";
 
 
 
@@ -297,6 +298,106 @@ export default {
     const mail = ref(null)
     const password = ref(null)
     const model = ref(null)
+    const router = useRouter()
+    
+
+    const cars = [
+        {
+            "name": "honda",
+            "id": 1,
+            "models": [
+                "Honda Civic",
+                "Cr v",
+                "Honda HR-V",
+                "Honda Odyssey",
+                "Honda Fit",
+                "Honda Civic Type R",
+                "Honda Pilot",
+                "Honda Passport",
+                "Honda CIty",
+                "Insight",
+                "Honda Ridgeline",
+                "Nsx",
+                "S2000",
+                "Honda CR-Z",
+                "Honda Prelude",
+                "Honda e",
+                "Honda Accor Hybrid",
+                "Honda CR-V Hybrid",
+                "Honda Clarity",
+                "Honda Accord Crosstour",
+                "Amaze",
+                "CIvic Si",
+                "Honda Element"
+            ]
+        },
+        {
+            "name": "kia",
+            "id": 2,
+            "models":[
+                "Kia Sportage",
+                "Kia Soronto",
+                "Kia K5",
+                "Kia Stinger",
+                "Kia Rio",
+                "Kia Forte",
+                "Kia Soul",
+                "Kia Carnival",
+                "Kia Seltos",
+                "Kia Niro"
+            ]
+        },
+        {
+            "name": "toyota",
+            "id": 2,
+            "models":[
+                "Toyota Camry",
+                "Toyota Corolla",
+                "Toyota Pirus",
+                "Rav4",
+                "Toyota 4Runner",
+                "Toyota Supra",
+                "Toyota C-HR",
+                "Toyota Yaris",
+                "Highlander",
+                "Land Cruiser"
+            ]
+        },
+        {
+            "name": "lexus",
+            "id": 4,
+            "models":[
+                "Lexus IS",
+                "Lexus LS",
+                "Lexus ES",
+                "Lexus NX",
+                "Lexus GS",
+                "Lexus LC",
+                "Lexus RC",
+                "Lexus GX",
+                "Lexus UX",
+                "Lexus CT",
+                "Lexus LFA",
+                "Lexus SC"
+            ]
+        },
+        {
+            "name": "mercedes",
+            "id": 5,
+            "models": [
+                "Mercedes-Benz C-Class",
+                "Mercedes-Benz S-Class",
+                "Mercedes-Benz E-Class",
+                "Mercedes-Benz GLS",
+                "Mercedes-Benz CLS",
+                "Mercedes-Benz GLE",
+                "Mercedes-Benz EQS",
+                "Mercedes-Benz GLC",
+                "Mercedes-Benz EQE",
+                "Mercedes-Benz EQB"
+            ]
+        }
+    ]
     
 
     async function handleClickSignIn(){
@@ -344,21 +445,28 @@ export default {
       error.value = null
       modellist.value = null
 
-      fetch(`/vehicle/cars.json`)
-      .then(res => res.json())
-      .then(data =>{
-        const { cars } = data
-        cars.forEach((car)=>{
-          if(car.name === carModel.value.toLowerCase()){
-            modellist.value = car.models
-          }
-        })
+      cars.forEach((car)=>{
+        if(car.name === carModel.value.toLowerCase()){
+          modellist.value = car.models
+        }
+      })
+
+      // fetch('@/vehicle/cars.json')
+      // .then(res => res.json())
+      // .then(data =>{
+      //   const { cars } = data
+      //   console.log(cars)
+      //   cars.forEach((car)=>{
+      //     if(car.name === carModel.value.toLowerCase()){
+      //       modellist.value = car.models
+      //     }
+      //   })
         
-      })
-      .catch(err => {
-        console.log(err.message)
-        modellist.value = null
-      })
+      // })
+      // .catch(err => {
+      //   console.log(err.message)
+      //   modellist.value = null
+      // })
       
     }
 
@@ -395,9 +503,13 @@ export default {
       showTwo.value = true
     }
 
+    function handleSubmit(){
+      router.push({ name: 'dashboard', params: { userId: 1} })
+    }
 
 
-    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, localStates, handleClickSignIn, carModel, modellist, handleModel, error, phoneNumber, results, name, password, mail, model, handleError }
+
+    return { showOne, showTwo, showThree, handleFirst, handleBackOne, handleSecond, handleBackTwo, localStates, handleClickSignIn, carModel, modellist, handleModel, error, phoneNumber, results, name, password, mail, model, handleError, handleSubmit }
   }
 }
 </script>

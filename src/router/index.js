@@ -48,7 +48,35 @@ const routes = [
     name: 'serviceDetail',
     component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/ServiceDetails.vue'),
     props: true
-  }
+  },
+  {
+    path: '/services',
+    name: 'serviceDash',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/individual/ServiceDash.vue')
+  },
+  {
+    path: '/bookings',
+    name: 'bookings',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/individual/BookingDash.vue')
+  },
+  {
+    path: '/serviceProfile/:serviceId',
+    name: 'serviceProfile',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/individual/ServiceProfile.vue'),
+    props: true
+  },
+  {
+    path: '/userSettings/:userId',
+    name: 'userSettings',
+    component: () => import(/* webpackChunkName: "about" */ '../views/dashboards/individual/SettingsDash.vue'),
+    props: true
+  },
+  {
+    path: '/messages/:userId',
+    name: 'messagesDash',
+    component: () => import(/* webpackChunkName: "about" */ '../components/dashboards/individual_dash/MessagesDash.vue'),
+    props: true
+  },
 ]
 
 const router = createRouter({

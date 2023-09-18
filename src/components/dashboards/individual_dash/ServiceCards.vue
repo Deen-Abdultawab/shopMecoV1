@@ -1,15 +1,6 @@
 <template>
-    <div class="dash-header">
-        <div class="intro">
-            <h1>Hi Mubaarak</h1>
-            <p>Welcome to your one-stop auto mechanic shop</p>
-        </div>
-        <div class="img">
-            <img src="@/assets/images/car_part_seller.png" alt="">
-        </div>
-    </div>
     <div class="service-container">
-        <div class="sort">
+        <div class="sort" v-if="showSort">
             <label > Sort by:</label>
             <div class="custom">
                 <select>
@@ -43,7 +34,7 @@
             </article>
         </div>
     </div>
-    <button class="load-btn">
+    <button class="load-btn" v-if="showLoadBtn">
         <img src="@/assets/images/load.png" alt="">
         load more...
     </button>
@@ -52,6 +43,7 @@
 
 <script>
     export default {
+        props: ['showSort', 'showloadBtn'],
         setup(){
             const services = [
                 {
@@ -112,49 +104,6 @@
 </script>
 
 <style scoped>
-    .dash-header {
-        width: 90%;
-        margin: 4.31rem auto 2.5rem;
-        border-radius: 0.9375rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 10.625rem;        
-        background: #7B61FF url('@/assets/images/head-bg.png');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    .intro {
-        padding-left: 3.38rem;
-    }
-
-    .intro h1, .intro p {
-        color: var(--primary-text);
-        font-size: 1.25rem;
-        font-family: Inter;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-    }
-
-    .intro p {
-        color: var(--colors-white);
-        font-size: 1.875rem;
-        font-weight: 500;
-        max-width: 30.25rem;
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-
-    .img {
-        align-self: end;
-    }
-
-    .img img {
-        display: block;
-        height: inherit;
-    }
 
     .service-container {
         width: 95%;
@@ -162,6 +111,12 @@
         border-radius: 0.625rem;
         background: var(--colors-white);
         padding: 1.25rem 1.87rem;
+        height: 60rem;
+        overflow-y: auto;
+    }
+
+     .service-container::-webkit-scrollbar{
+        display: none;
     }
 
     .sort {
@@ -248,7 +203,6 @@
     .services {
         display: grid;
         gap: 1.25rem;
-        /* align-items: center; */
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 

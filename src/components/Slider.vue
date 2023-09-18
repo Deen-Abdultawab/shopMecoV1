@@ -81,16 +81,13 @@ export default {
     width: 90vw;
     height: 200px;
     margin: 0 auto;
-    /* border: 1px solid red; */
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     gap: 1rem;
     overflow-x: auto;
   }
 
   .brand-image {
-    /* border: 1px solid blue; */
     flex: 1 0 50%;
     height: 100%;
     display: grid;

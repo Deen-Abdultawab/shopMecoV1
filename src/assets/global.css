@@ -19,8 +19,16 @@
   --colors-dark-text: #1F1F1F;
   --primary-light: #F5F3FF;
   --colors-white: #FFF;
-  --black-1: #171725Y;
+  --black-1: #171725;
   --colors-placeholder-text: #B5B5B5;
+  --secondary-color-secondary-1: #1A162E;
+  --colors-bg-success:  #CFFCD4;
+  --error: #FEE5E5;
+  --colors-warning: #EF1F1F;
+  --colors-success: #0CDF24;
+  --btn-hover-bg: #1d0252;
+  --secondary-red: #FF6370;
+  --transition: all 0.3s linear;
 }
 
 ul {
@@ -43,7 +51,6 @@ input::placeholder {
 
 img {
   object-fit: cover;
-  /* z-index: 999999999; */
 }
 
 .formy {
@@ -100,8 +107,6 @@ label {
     line-height: 18px;
     color: #5007E0; 
   }
-
-  
 
   .custom-form {
     margin-bottom: 2rem;
@@ -244,9 +249,7 @@ label {
         display: flex;
         justify-content: center;
         align-items: center;
-        /* width: 100%; */
         gap: 0.3rem;
-        /* border: 1px solid red; */
     }
 
     .rating h3 {

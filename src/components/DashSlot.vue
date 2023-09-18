@@ -1,37 +1,51 @@
 <template>
     <div class="dash-container">
         <div class="left-col sidebar">
-           <div class="logo">
-            <img src="@/assets/images/Maskgroup.png" alt="">
-           </div>
-           <ul class="dash-links navs">
-            <li class="dash-link active-link">
-                <img src="@/assets/images/dashboard-icon-gray.png" alt="">
-                Home
-            </li>
-            <li class="dash-link">
-                <img src="@/assets/images/car-icon.png" alt="">
-                Booking
-            </li>
-            <li class="dash-link">
-                <img src="@/assets/images/service-icon.png" alt="">
-                Services
-            </li>
-            <li class="dash-link">
-                <img src="@/assets/images/comment.png" alt="">
-                Messages
-            </li>
-           </ul>
-           <ul class="dash-links user-icons">
-            <li class="dash-link user">
-                <img src="@/assets/images/settings.png" alt="">
-                Settings
-            </li>
-            <li class="dash-link user">
-                <img src="@/assets/images/signout.png" alt="">
-                Log out
-            </li>
-           </ul>
+            <router-link :to="{ name: 'home'}">
+                <div class="logo">
+                    <img src="@/assets/images/Maskgroup.png" alt="">
+                </div>
+            </router-link>
+            <div class="links-container">
+                <ul class="dash-links navs" ref="dashLinks">
+                        <li class="dash-link" :class="{ activeLink: home}">
+                            <router-link :to="{ name: 'dashboard', params:{ userId: 1}}" class="dash-flex">
+                                        <img src="@/assets/images/dashboard-icon-gray.png" alt="">
+                                        Home
+                            </router-link>
+                        </li>
+                        <li class="dash-link" :class="{ activeLink: bookings}">
+                            <router-link :to="{ name: 'bookings'}" class="dash-flex">
+                                        <img src="@/assets/images/car-icon.png" alt="">
+                                        Booking
+                            </router-link>
+                        </li>
+                        <li class="dash-link" :class="{ activeLink: service}">
+                            <router-link :to="{ name: 'serviceDash'}" class="dash-flex">
+                                    <img src="@/assets/images/service-icon.png" alt="">
+                                    Services
+                            </router-link>
+                        </li>
+                        <li class="dash-link" :class="{ activeLink: messages}">
+                            <router-link :to="{ name: 'messagesDash', params:{ userId: 1}}" class="dash-flex">
+                                <img src="@/assets/images/comment.png" alt="">
+                                Messages
+                            </router-link>
+                        </li>
+                </ul>
+                <ul class="dash-links user-icons" ref="dashLinks2">
+                        <li class="dash-link user" :class="{ activeLink: settings}">
+                            <router-link :to="{ name: 'userSettings', params:{ userId: 1}}" class="dash-flex">
+                                    <img src="@/assets/images/settings.png" alt="">
+                                    Settings
+                            </router-link>
+                        </li>
+                        <li class="dash-link user dash-flex" :class="{ activeLink: signout}" @click="handleLogout">
+                            <img src="@/assets/images/signout.png" alt="">
+                            Log out
+                        </li>
+                </ul>
+            </div>
         </div>
         <div class="right-col">
             <div class="header">
@@ -75,6 +89,22 @@
                     </article>
                 </div>
             </div>
+            <div class="window-container" :class="{ show: showWindow }">
+                <div class="overlay"></div>
+                <div class="log-out">
+                    <div class="logout-window">
+                        <div class="logout-head">
+                            <h3>logout</h3>
+                            <span class="material-icons" @click="closeLogout">close</span>
+                        </div>
+                        <p>Are you sure you want to logout? If yes, then, lets do this again</p>.
+                        <div class="btns">
+                            <button class="logout-btn">logout</button>
+                            <button class="cancel-btn">cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="section-container">
                 <slot></slot>
             </div>
@@ -85,6 +115,7 @@
 <script>
 import { ref } from 'vue';
     export default {
+        props: ['home', 'service', 'bookings', 'messages', 'settings', 'signout'],
         setup(){
             const notifications = [
                 {
@@ -114,6 +145,13 @@ import { ref } from 'vue';
             ]
             const showNoti = ref(false)
             const noti = ref(null)
+            const signout = ref(false)
+            const showWindow = ref(false)
+            const dashLinks = ref(null)
+            const dashLinks2 = ref(null)
+            const activeNav = ref(null)
+            const list = ref([])
+            
 
 
             function notiToggle(){
@@ -125,13 +163,140 @@ import { ref } from 'vue';
                 }
             }
 
+            function handleLogout(){
+                const list1 = [...dashLinks.value.children]
+                const list2 = [...dashLinks2.value.children]
+                list.value = [...list1, ...list2]
+                list.value.forEach((list)=>{
+                    if(list.classList.contains('activeLink')){
+                        activeNav.value = list
+                    }
+                    list.classList.remove('activeLink')
+                })
+                signout.value = true
+                showWindow.value = true
+            }
 
-            return { notifications, notiToggle, showNoti, noti }
+            function closeLogout(){
+                list.value.forEach((list)=>{
+                    list.classList.remove('activeLink')
+                })
+                signout.value = false
+                showWindow.value = false
+                activeNav.value.classList.add('activeLink')
+            }
+
+
+            return { notifications, notiToggle, showNoti, noti, signout, handleLogout, showWindow, dashLinks, dashLinks2, closeLogout}
         }
     }
 </script>
 
 <style scoped>
+
+    .logout-head {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+    }
+
+    .logout-head h3 {
+        color: var(--colors-dark-text);
+        font-family: Inter;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        text-transform: capitalize;
+    }
+
+    .logout-head span {
+        font-size: 1.5rem;
+        padding: 0.3rem;
+        cursor: pointer;
+        transition: all 0.3s linear;
+    }
+
+    .logout-head span:hover {
+        color: var(--primary-color);
+    }
+
+    .logout-window p {
+        color: var(--primary-gray);
+        font-family: Sofia Pro;
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: 2.5rem;
+    }
+
+    .btns button {
+        border-radius: 0.47319rem;
+        padding: 0.94rem 3.1rem;
+        font-family: Sofia Pro;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-transform: capitalize;
+        cursor: pointer;
+        transition: all 0.3s linear;
+    }
+
+    .logout-btn {
+        background: var(--primary-color);
+        color: var(--colors-white);
+    }
+
+    .logout-btn:hover {
+        background: #1d0252;
+    }
+
+    .btns button.cancel-btn {
+        color: var(--primary-color);
+        padding: 0.94rem 1.87rem;
+    }
+
+    .right-col {
+        position: relative;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        min-height: 100vh;
+        background: rgba(0, 0, 0, 0.40);
+        transition: all 0.3s linear;
+        opacity: 0;
+        z-index: -1;
+    }
+    .show .overlay{
+        opacity: 1;
+        z-index: 99999;
+    }
+    .log-out {
+        max-width: 90%;
+        width: 47.5rem;
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 0.625rem;
+        background: #FFF;
+        padding: 1.87rem 2.5rem 2.5rem;
+        transition: all 0.3s linear;
+        opacity: 0;
+        z-index: -1;
+    }
+
+    .show .log-out {
+        opacity: 1;
+        z-index: 99999999;
+    }
 
     .notification {
         width: 27.5rem;
@@ -150,7 +315,6 @@ import { ref } from 'vue';
     .notification.show {
         height: auto;
     }
-
     .noti-head {
         display: flex;
         align-items: center;
@@ -168,7 +332,6 @@ import { ref } from 'vue';
         font-weight: 500;
         line-height: 1.5rem;
     }
-
     .noti-head button {
         color: var(--primary-color);
         text-align: right;
@@ -192,7 +355,6 @@ import { ref } from 'vue';
         margin-bottom: 0.75rem;
         
     }
-
     .notif:last-of-type{
         border-bottom: none;
     }
@@ -252,8 +414,8 @@ import { ref } from 'vue';
 
     .logo {
        width: 10.875rem;
-        height: 1.96256rem;
-        margin: 1.61rem auto 4.72rem;
+        height: 7rem;
+        margin: 1.61rem auto 0rem;
     }
 
     .logo img {
@@ -264,7 +426,7 @@ import { ref } from 'vue';
         background: var(--primary-color);
     }
     
-    .head-input::placeholder, .head-input, .dash-links li, .user-info .name, .user-info .status {
+    .head-input::placeholder, .head-input, .dash-links .dash-link, .user-info .name, .user-info .status {
         font-size: 1rem;
         font-family: Sofia Pro;
         font-style: normal;
@@ -274,14 +436,25 @@ import { ref } from 'vue';
     }
     .dash-links {
         width: 10.875rem;
-        margin: 0 auto 34rem;
+        height: auto;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
     }
 
-    .dash-links li {
-        width: 100%;
+    .links-container {
+        height: 85%;
+        display: grid;
+        grid-template-rows: 1f auto;
+    }
+
+    .dash-links:last-of-type {
+        padding-bottom: 5rem;
+        height: auto;
+    }
+
+    .dash-flex {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -290,20 +463,27 @@ import { ref } from 'vue';
         font-weight: 500;
         padding: 0.4375rem 0.5rem;
         border-radius: 0.375rem;
-        cursor: pointer;
+        width: 100%;
         transition: all 0.3s linear;
     }
 
-    .dash-link.active-link {
+    .dash-links .dash-link {
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s linear;
+        border-radius: 0.375rem;
+    }
+
+    .dash-link.activeLink .dash-flex, .dash-link.activeLink.dash-flex {
         color: var(--primary-color);
         background: var(--primary-light);
     }
 
-    .dash-link.active-link img{
+    .dash-link.activeLink img{
         filter: grayscale(100%) sepia(0%) hue-rotate(180deg) brightness(5%) saturate(5%);
     }
 
-    .dash-links li:hover {
+    .dash-links .dash-flex:hover {
         background: var(--primary-light);
         color: var(--primary-color);
     }
